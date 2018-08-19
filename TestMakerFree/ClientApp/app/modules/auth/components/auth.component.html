@@ -1,0 +1,16 @@
+﻿<form [formGroup]="loginForm" (ngSubmit)="login()">
+    <div style="width: 10em; height: 10em; border-radius: 5em; background-color: #ccc; text-align: center; padding: 2em; margin: 1em auto;">
+        <span class="glyphicon glyphicon-user" style="color:#999 ;font-size: 5em;"></span>
+        <div style="margin-top: 3em; font-size: 1em; color:orange">User Login</div>
+    </div>
+
+    <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" class="form-control" formControlName="username" required />
+    </div>
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" class="form-control" formControlName="password" required />
+    </div>
+    <input type="submit" value="Login" class="btn btn-primary" [disabled]="!loginForm.valid" />
+</form>

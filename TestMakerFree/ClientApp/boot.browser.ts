@@ -15,7 +15,7 @@ if (module.hot) {
         modulePromise.then(appModule => appModule.destroy());
     });
 } else {
-    enableProdMode();
+    //    enableProdMode();
 }
 
 // Note: @ng-tools/webpack looks for the following expression when performing production

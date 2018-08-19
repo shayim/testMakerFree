@@ -1,0 +1,16 @@
+﻿h1 {
+    color: wheat;
+}
+
+ul {
+    list-style: none;
+}
+
+li {
+    color: #000acb;
+    cursor: pointer;
+}
+
+    li.selected {
+        background-color: #eee;
+    }

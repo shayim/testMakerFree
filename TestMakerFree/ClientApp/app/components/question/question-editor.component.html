@@ -1,0 +1,19 @@
+﻿<ng-container *ngIf="question">
+    <form #f="ngForm" (ngSubmit)="submit(f.value)">
+        <h1>{{title}} Question:</h1>
+        <div>
+            <input type="hidden" [ngModel]="question.quizId" name="quizId">
+        </div>
+        <div>
+            <input type="hidden" [ngModel]="question.id" name="id">
+        </div>
+        <div class="form-group">
+            <label for="text">Text</label>
+            <input [(ngModel)]="question.text" name="text" id="text" class="form-control" required>
+        </div>
+
+        <input type="submit" class="btn btn-primary" value="Submit" />
+        <button *ngIf="question.id" type="button" class="btn btn-danger" (click)="remove()">Delete</button>
+    </form>
+    <app-answer-list *ngIf="question.id" [question]="question"></app-answer-list>
+</ng-container>

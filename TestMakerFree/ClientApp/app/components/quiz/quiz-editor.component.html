@@ -1,0 +1,27 @@
+﻿<div *ngIf="quiz">
+    <form #f="ngForm" (ngSubmit)="submit(f.value)">
+        <h1>{{title}} Quiz: </h1>
+        <div>
+            <input type="hidden" [ngModel]="quiz.id" name="id">
+        </div>
+        <div>
+            <input type="hidden" [ngModel]="quiz.userId" name="userId">
+        </div>
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input [(ngModel)]="quiz.title" name="title" id="title" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input [(ngModel)]="quiz.description" name="description" id="description" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="text">Text</label>
+            <input [(ngModel)]="quiz.text" name="text" id="text" class="form-control" required>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Submit" />
+        <button *ngIf="quiz.id" type="button" class="btn btn-danger" (click)="remove()">Delete</button>
+    </form>
+    <app-question-list *ngIf="quiz.id" [quizId]="quiz.id"></app-question-list>
+    <app-result-list *ngIf="quiz.id" [quizId]="quiz.id"></app-result-list>
+</div>
