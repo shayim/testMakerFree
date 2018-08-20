@@ -10,10 +10,12 @@ using TestMakerFreeWebApp.Data;
 using TestMakerFreeWebApp.ViewModels;
 using TestMakerFreeWebApp.Models;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace TestMakerFreeWebApp.Controllers
 {
+    [Authorize]
     [Route("api/quiz/{quizId}/question/{qId}/[controller]")]
     public class AnswerController : Controller
     {

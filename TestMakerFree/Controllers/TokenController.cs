@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using TestMakerFreeWebApp.Data;
@@ -15,56 +16,6 @@ using TestMakerFreeWebApp.ViewModels;
 
 namespace TestMakerFreeWebApp.Controllers
 {
-    //    [Route("[controller]")]
-    //    public class TokenController : Controller
-    //    {
-    //        private readonly IConfiguration _config;
-    //        private readonly AppDbContext _context;
-    //
-    //        public TokenController(AppDbContext context, IConfiguration config)
-    //        {
-    //            _context = context;
-    //            _config = config;
-    //        }
-    //
-    //        [HttpPost("Auth")]
-    //        public IActionResult GetToken([FromBody]TokenRequestViewModel model)
-    //        {
-    //            if (!ModelState.IsValid) return Unauthorized();
-    //            AppUser user = _context.Users.SingleOrDefault(u => u.UserName == model.Username);
-    //
-    //            if (user == null) return Unauthorized();
-    //
-    //            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Auth:Jwt:Key"]));
-    //            var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-    //
-    //            var claims = new List<Claim>()
-    //            {
-    //                new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-    //                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-    //            };
-    //
-    //            var iat = DateTime.Now;
-    //            var exp = iat.AddHours(2);
-    //
-    //            var token = new JwtSecurityToken(
-    //                _config["Auth:Jwt:Issuer"],
-    //                _config["Auth:Jwt:Audience"],
-    //                claims,
-    //                iat,
-    //                exp,
-    //                cred);
-    //
-    //            var handler = new JwtSecurityTokenHandler();
-    //
-    //            var jwtToken = handler.WriteToken(token);
-    //
-    //            var tokenResponse = new TokenResponseViewModel { Token = jwtToken, Expiration = 7200 };
-    //
-    //            return Json(tokenResponse);
-    //        }
-    //    }
-
     [Route("[controller]")]
     public class TokenController : BaseApiController
     {
@@ -74,7 +25,25 @@ namespace TestMakerFreeWebApp.Controllers
         [HttpPost("Auth")]
         public async Task<IActionResult> Jwt([FromBody] TokenRequestViewModel model)
         {
-            if (!ModelState.IsValid) return Unauthorized();
+            switch (model.GrantType)
+            {
+                case "password":
+                    return await GetToken(model);
+
+                case "refresh_token":
+                    return await RefreshToken(model);
+
+                default:
+                    return Unauthorized();
+            }
+        }
+
+        private async Task<IActionResult> GetToken(TokenRequestViewModel model)
+        {
+            if (string.IsNullOrWhiteSpace(model.Username) || string.IsNullOrWhiteSpace(model.Password))
+            {
+                return Unauthorized();
+            }
 
             AppUser user = await _userManager.FindByNameAsync(model.Username);
             if (user == null) return Unauthorized();
@@ -90,10 +59,10 @@ namespace TestMakerFreeWebApp.Controllers
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim>()
-                {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                };
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
 
             var iat = DateTime.Now;
             var exp = iat.AddMinutes(2);
@@ -117,6 +86,16 @@ namespace TestMakerFreeWebApp.Controllers
             };
 
             return Json(tokenResponse);
+        }
+
+        private async Task<IActionResult> RefreshToken(TokenRequestViewModel model)
+        {
+            if (string.IsNullOrWhiteSpace(model.RefreshToken))
+            {
+                return Unauthorized();
+            }
+
+            var refreshToken = _context.Tokens.SingleOrDefaultAsync(t => t.ClientId)
         }
     }
 }

@@ -9,6 +9,7 @@ namespace TestMakerFreeWebApp.ViewModels
     public class TokenResponseViewModel
     {
         public double Expiration { get; set; }
+        public string RefreshToken { get; set; }
         public string Token { get; set; }
     }
 }

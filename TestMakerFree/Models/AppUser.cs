@@ -24,6 +24,8 @@ namespace TestMakerFreeWebApp.Models
 
         public string Notes { get; set; }
 
+        public virtual IList<Token> Tokens { get; set; }
+
         [Required] public int Type { get; set; } = 0;
     }
 }

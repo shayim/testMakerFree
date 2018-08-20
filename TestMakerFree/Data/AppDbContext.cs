@@ -23,6 +23,8 @@ namespace TestMakerFreeWebApp.Data
 
         public DbSet<Result> Results { get; set; }
 
+        public DbSet<Token> Tokens { get; set; }
+
         protected override void OnModelCreating(ModelBuilder mb)
         {
             mb.Entity<AppUser>().HasMany<Quiz>().WithOne(q => q.User).HasForeignKey(q => q.UserId).IsRequired();
@@ -33,7 +35,11 @@ namespace TestMakerFreeWebApp.Data
 
             mb.Entity<Quiz>().HasMany<Result>(q => q.Results).WithOne().HasForeignKey(r => r.QuizId).IsRequired();
 
+            mb.Entity<AppUser>().HasMany<Token>(u => u.Tokens).WithOne(t => t.AppUser).HasForeignKey(t => t.UserId).IsRequired();
+
             base.OnModelCreating(mb);
+
+            mb.Entity<AppUser>().ToTable("AppUser");
         }
     }
 }

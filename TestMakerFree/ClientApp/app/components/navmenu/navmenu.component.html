@@ -17,9 +17,14 @@
                         <span class='glyphicon glyphicon-home'></span> Home
                     </a>
                 </li>
-                <li [routerLinkActive]="['link-active']">
+                <li *ngIf="!auth.isLoggedIn()" [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/login']">
                         <span class='glyphicon glyphicon-log-in'></span> Login
+                    </a>
+                </li>
+                <li *ngIf="auth.isLoggedIn()" [routerLinkActive]="['link-active']">
+                    <a (click)="auth.logout()">
+                        <span class='glyphicon glyphicon-log-out'></span> Logout
                     </a>
                 </li>
                 <li [routerLinkActive]="['link-active']">
@@ -27,7 +32,7 @@
                         <span class="glyphicon glyphicon-info-sign"></span> About Us
                     </a>
                 </li>
-                <li [routerLinkActive]="['link-active']">
+                <li *ngIf="auth.isLoggedIn()" [routerLinkActive]="['link-active']">
                     <a [routerLink]="['quiz', 0 ]">
                         <span class="glyphicon glyphicon-plus"></span> Create a Quiz
                     </a>
