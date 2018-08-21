@@ -17,7 +17,7 @@ namespace TestMakerFreeWebApp.Models
         [Required]
         public string ClientId { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
         public int Id { get; set; }
         public int Type { get; set; }
         public string UserId { get; set; }

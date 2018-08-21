@@ -12,6 +12,8 @@ namespace TestMakerFreeWebApp.ViewModels
 {
     public class TokenRequestViewModel
     {
+        public string ClientId { get; set; }
+
         [JsonProperty("grant_type")]
         public string GrantType { get; set; }
 

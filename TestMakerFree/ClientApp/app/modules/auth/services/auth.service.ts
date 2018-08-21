@@ -44,7 +44,7 @@ export class AuthService {
 
     getTokenFromApi(data: any): Observable<ITokenResponse> {
         const url = `${this.baseUrl}/${this.apiUrl}`;
-        data = { ...data, grant_type: 'password' };
+        data = { ...data, grant_type: 'password', clientId: "test-maker-free" };
         return this.http.post<ITokenResponse>(url, data);
     }
 

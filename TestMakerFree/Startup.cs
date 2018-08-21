@@ -102,7 +102,7 @@ namespace TestMakerFree
                         ValidAudience = Configuration["Auth:Jwt:Audience"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Auth:Jwt:Key"])),
 
-                        //                        ClockSkew = TimeSpan.FromMinutes(3),
+                        ClockSkew = TimeSpan.FromMinutes(3),
                         ValidateLifetime = true,
                         ValidateIssuer = true,
                         ValidateIssuerSigningKey = true,
